@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <h2 class="logo">Zain's Personal Portfolio</h2>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="skills.html">Skills</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+
+        <section id="contact" class="contact">
+            <h1>Contact Me</h1>
+            <div class="contact-links">
+                <a href="mailto:23ahmazain@gmail.com" class="contact-link">
+                    <span class="contact-link-label">Email</span>
+                    <span class="contact-link-value">23ahmazain@gmail.com</span>
+                </a>
+                <a href="https://github.com/ZainAhmad2" target="_blank" rel="noopener noreferrer" class="contact-link">
+                    <span class="contact-link-label">GitHub</span>
+                    <span class="contact-link-value">github.com/ZainAhmad2</span>
+                </a>
+                <a href="https://www.linkedin.com/in/zain-ahmad-49a44530b/" target="_blank" rel="noopener noreferrer" class="contact-link">
+                    <span class="contact-link-label">LinkedIn</span>
+                    <span class="contact-link-value">linkedin.com/in/zain-ahmad-49a44530b</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="community">
+            <h2 class="community-heading">Blog</h2>
+
+            <form class="community-form" id="communityForm">
+                <div class="community-form-row">
+                    <input type="text" id="postName" class="community-input" placeholder="Your name" maxlength="60" required>
+                    <button type="submit" class="community-submit">Post</button>
+                </div>
+                <textarea id="postMessage" class="community-textarea" placeholder="What's on your mind?" maxlength="500" required></textarea>
+            </form>
+
+            <div class="community-grid" id="communityGrid"></div>
+        </section>
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+            import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyCA1KoSNsiU7TMaajFBUMIdUsk28UdfWw0",
+                authDomain: "project-1c21a.firebaseapp.com",
+                projectId: "project-1c21a",
+                storageBucket: "project-1c21a.firebasestorage.app",
+                messagingSenderId: "481361719434",
+                appId: "1:481361719434:web:b8c302a8ddb7e810cabd73"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+
+            function escapeHtml(str) {
+                return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            }
+
+            function formatDate(timestamp) {
+                if (!timestamp) return '';
+                const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            }
+
+            const grid = document.getElementById('communityGrid');
+            grid.innerHTML = '';
+
+            const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
+
+            onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    grid.innerHTML = '';
+                    return;
+                }
+                grid.innerHTML = snapshot.docs.map(doc => {
+                    const p = doc.data();
+                    return `
+                        <article class="community-card">
+                            <div class="community-meta">${escapeHtml(p.name)} &middot; ${formatDate(p.date)}</div>
+                            <p class="community-message">${escapeHtml(p.message)}</p>
+                        </article>
+                    `;
+                }).join('');
+            });
+
+            document.getElementById('communityForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const name = document.getElementById('postName').value.trim();
+                const message = document.getElementById('postMessage').value.trim();
+                if (!name || !message) return;
+
+                const btn = this.querySelector('.community-submit');
+                btn.disabled = true;
+                btn.textContent = 'Posting...';
+
+                try {
+                    await addDoc(collection(db, 'posts'), {
+                        name,
+                        message,
+                        date: serverTimestamp()
+                    });
+                    this.reset();
+                } catch (err) {
+                    console.error(err);
+                    alert('Failed to post. Please try again.');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Post';
+                }
+            });
+        </script>
+
+    </div>
+
+</body>
+</html>

@@ -123,3 +123,164 @@ nav {
     color: #555;
     margin: 0;
 }
+
+.page-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.contact {
+    margin-bottom: 4rem;
+}
+
+.contact h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #222;
+}
+
+.contact-intro {
+    font-size: 1rem;
+    color: #555;
+    margin: 1rem 0 2rem;
+    line-height: 1.7;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.contact-link {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e0e0e0;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+}
+
+.contact-link:hover .contact-link-value {
+    text-decoration: underline;
+    color: #000;
+}
+
+.contact-link-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #888;
+    width: 70px;
+    flex-shrink: 0;
+}
+
+.contact-link-value {
+    font-size: 1rem;
+    color: #222;
+    font-weight: 500;
+}
+
+/* Community Board */
+
+.community-heading {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #222;
+}
+
+
+.community-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.community-form-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.community-input {
+    flex: 1;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.community-input:focus {
+    outline: none;
+    border-color: #222;
+}
+
+.community-textarea {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 90px;
+    box-sizing: border-box;
+}
+
+.community-textarea:focus {
+    outline: none;
+    border-color: #222;
+}
+
+.community-submit {
+    padding: 0.6rem 1.4rem;
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.community-submit:hover {
+    background-color: #444;
+}
+
+.community-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.community-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.4rem 1.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    border-left: 4px solid #222;
+}
+
+.community-meta {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.community-message {
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.7;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
