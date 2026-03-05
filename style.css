@@ -150,7 +150,7 @@ nav {
     flex-direction: column;
     gap: 0.4rem;
 }
-
+/* Reset the cars styling inherited from the original about me section*/
 .project-bullets li {
     background: none;
     border-radius: 0;
@@ -376,7 +376,7 @@ nav {
     outline: none;
     border-color: #222;
 }
-
+/* I added a nowrap here to prevent the submit button from breaking into multiple lines when the screen is narrow */
 .community-submit {
     padding: 0.6rem 1.4rem;
     background-color: #222;

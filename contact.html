@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
+    <!-- Calling the stylesheet for this page and making sure its consistent across all pages -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+    <!--Building the navigation bar with links to all the pages in this section, home, about, skills, projects, research, contact-->
     <nav>
         <div class="nav-container">
             <h2 class="logo">Zain's Personal Portfolio</h2>
@@ -23,9 +24,10 @@
     </nav>
 
     <div class="page-wrapper">
-
+         <!-- Contant section containing email, github, and linkedin and the messages form -->
         <section id="contact" class="contact">
             <h1>Contact Me</h1>
+            <!-- Div containing the contact links for email, github, and linkedin -->
             <div class="contact-links">
                 <a href="mailto:23ahmazain@gmail.com" class="contact-link">
                     <span class="contact-link-label">Email</span>
@@ -40,7 +42,8 @@
                     <span class="contact-link-value">linkedin.com/in/zain-ahmad-49a44530b</span>
                 </a>
             </div>
-
+            <!-- From here I'm using firebase to store messages sent through the contact form, and also a simple community message board
+             where visitors can post messages that are displayed on the site -->
             <form class="contact-form" id="contactForm">
                 <h2 class="contact-form-heading">Send a Message</h2>
                 <div class="contact-form-row">
@@ -65,10 +68,10 @@
                 <p class="contact-form-status" id="contactStatus"></p>
             </form>
         </section>
-
+    <!-- Community blog section that allows me and other members of the community to leave comments and saves the responses to
+    firebase to be displayed on the site -->
         <section class="community">
             <h2 class="community-heading">Blog</h2>
-
             <form class="community-form" id="communityForm">
                 <div class="community-form-row">
                     <input type="text" id="postName" class="community-input" placeholder="Your name" maxlength="60" required>
@@ -76,14 +79,15 @@
                 </div>
                 <textarea id="postMessage" class="community-textarea" placeholder="What's on your mind?" maxlength="500" required></textarea>
             </form>
-
+            <!-- Grid containing the old posts diplayed and picked up here -->
             <div class="community-grid" id="communityGrid"></div>
         </section>
 
         <script type="module">
+            /* Imports for the firebase setup */
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
             import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+            /* Configs from the firebase that include the API key and other project info as directed from Firebase */
             const firebaseConfig = {
                 apiKey: "AIzaSyCA1KoSNsiU7TMaajFBUMIdUsk28UdfWw0",
                 authDomain: "project-1c21a.firebaseapp.com",
@@ -92,28 +96,22 @@
                 messagingSenderId: "481361719434",
                 appId: "1:481361719434:web:b8c302a8ddb7e810cabd73"
             };
-
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
-
-            function escapeHtml(str) {
-                return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-            }
-
+            /* Simple function that formats the timestamp from firebase into a readble format */
             function formatDate(timestamp) {
                 if (!timestamp) return '';
                 const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
                 return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
             }
-
+            /*Add the blog posts in real time, with automatic storing from newest to oldest */
             const grid = document.getElementById('communityGrid');
-
             const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
-
             onSnapshot(q, (snapshot) => {
                 if (snapshot.empty) {
                     return;
                 }
+                /* Render each post as a card in the community grid */
                 grid.innerHTML = snapshot.docs.map(doc => {
                     const p = doc.data();
                     return `
@@ -124,7 +122,7 @@
                     `;
                 }).join('');
             });
-
+            /* Handles the contact form submission such as name, email, subject, the message and saves it to firebase */
             document.getElementById('contactForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const name = document.getElementById('contactName').value.trim();
@@ -132,14 +130,12 @@
                 const subject = document.getElementById('contactSubject').value.trim();
                 const message = document.getElementById('contactMessage').value.trim();
                 if (!name || !email || !message) return;
-
                 const btn = document.getElementById('contactSubmitBtn');
                 const status = document.getElementById('contactStatus');
                 btn.disabled = true;
                 btn.textContent = 'Sending...';
                 status.textContent = '';
                 status.className = 'contact-form-status';
-
                 try {
                     await addDoc(collection(db, 'contacts'), {
                         name,
@@ -160,7 +156,7 @@
                     btn.textContent = 'Send Message';
                 }
             });
-
+            /* This is for the blog post form submission, taking the name and message and again saving it to firebase */
             document.getElementById('communityForm').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const name = document.getElementById('postName').value.trim();
@@ -187,8 +183,6 @@
                 }
             });
         </script>
-
     </div>
-
 </body>
 </html>
